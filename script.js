@@ -96,7 +96,7 @@ initializeSearch();
 /* Show initial placeholder */
 productsContainer.innerHTML = `
   <div class="placeholder-message">
-    Select a category or search all products to get started
+    Select a category or search all products to get started!
   </div>
 `;
 
@@ -432,7 +432,7 @@ function applyFiltersAndDisplay() {
     /* No search and no category - show placeholder */
     productsContainer.innerHTML = `
       <div class="placeholder-message">
-        Select a category or search all products to get started
+        Select a category or search all products to get started!
       </div>
     `;
     return;
