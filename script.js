@@ -835,10 +835,17 @@ function initScrollEffects() {
       headerContent.style.transform = `translateY(${translateY}px)`;
     }
 
-    /* Logo stays visible longer */
+    /* Logo stays visible longer - but keep fully visible on mobile */
     if (logo) {
-      const logoOpacity = Math.max(1 - scrollProgress * 0.8, 0);
-      logo.style.opacity = logoOpacity;
+      const isMobile = window.innerWidth <= 768;
+      if (isMobile) {
+        /* Keep logo fully visible on mobile screens */
+        logo.style.opacity = 1;
+      } else {
+        /* Apply scroll fade effect only on desktop */
+        const logoOpacity = Math.max(1 - scrollProgress * 0.8, 0);
+        logo.style.opacity = logoOpacity;
+      }
     }
 
     ticking = false;

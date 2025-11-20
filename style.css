@@ -634,7 +634,7 @@ body {
   }
 
   .logo {
-    max-width: 65px;
+    max-width: 90px;
   }
 
   .site-title {
@@ -1662,6 +1662,13 @@ body {
     display: block !important;
     font-size: 9px !important;
     padding: 4px 6px !important;
+  }
+
+  /* Ensure logo is always visible on mobile */
+  .logo {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
   }
 }
 
