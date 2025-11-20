@@ -148,12 +148,20 @@ body {
 
   .text-and-button {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: flex-start !important;
     gap: 10px;
   }
 
+  .header-content {
+    text-align: left !important;
+  }
+
   [dir="rtl"] .text-and-button {
-    align-items: flex-end;
+    align-items: flex-start !important;
+  }
+
+  [dir="rtl"] .header-content {
+    text-align: left !important;
   }
 }
 
@@ -1670,6 +1678,11 @@ body {
     visibility: visible !important;
     display: block !important;
     margin-top: 60px !important;
+  }
+
+  /* Keep RTL button on left side on mobile */
+  .language-toggle {
+    align-self: flex-start !important;
   }
 }
 
