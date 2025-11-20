@@ -241,6 +241,51 @@ body {
 
 #selectedProductsList {
   display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Selected products header with count and clear button */
+.selected-products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.selected-count {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.clear-all-btn {
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.clear-all-btn:hover {
+  background: #ff5252;
+  transform: translateY(-1px);
+}
+
+.clear-all-btn i {
+  font-size: 11px;
+}
+
+/* Selected products grid container */
+.selected-products-grid {
+  display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }

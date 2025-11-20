@@ -11,6 +11,38 @@ let selectedProducts = [];
 /* Array to store conversation history for context */
 let conversationHistory = [];
 
+/* LocalStorage functions for persistent data */
+function saveSelectedProductsToStorage() {
+  try {
+    localStorage.setItem('lorealSelectedProducts', JSON.stringify(selectedProducts));
+  } catch (error) {
+    console.error('Failed to save selected products to localStorage:', error);
+  }
+}
+
+function loadSelectedProductsFromStorage() {
+  try {
+    const saved = localStorage.getItem('lorealSelectedProducts');
+    if (saved) {
+      selectedProducts = JSON.parse(saved);
+      updateSelectedProductsDisplay();
+    }
+  } catch (error) {
+    console.error('Failed to load selected products from localStorage:', error);
+    selectedProducts = []; /* Reset to empty array on error */
+  }
+}
+
+function clearAllSelectedProducts() {
+  selectedProducts = [];
+  saveSelectedProductsToStorage();
+  updateSelectedProductsDisplay();
+  updateProductCardVisuals();
+}
+
+/* Load saved products from localStorage on page load */
+loadSelectedProductsFromStorage();
+
 /* Show initial placeholder until user selects a category */
 productsContainer.innerHTML = `
   <div class="placeholder-message">
@@ -134,6 +166,9 @@ function toggleProductSelection(product) {
     selectedProducts.push(product);
   }
   
+  /* Save to localStorage */
+  saveSelectedProductsToStorage();
+  
   /* Update the selected products display */
   updateSelectedProductsDisplay();
   
@@ -148,23 +183,36 @@ function updateSelectedProductsDisplay() {
     return;
   }
   
-  selectedProductsList.innerHTML = selectedProducts
-    .map(product => `
-      <div class="selected-product-item" data-product-id="${product.id}">
-        <img src="${product.image}" alt="${product.name}">
-        <div class="selected-product-info">
-          <h4>${product.name}</h4>
-          <p>${product.brand}</p>
-        </div>
-        <button class="remove-product-btn" data-product-id="${product.id}">
-          <i class="fa-solid fa-times"></i>
-        </button>
-      </div>
-    `)
-    .join('');
+  selectedProductsList.innerHTML = `
+    <div class="selected-products-header">
+      <span class="selected-count">${selectedProducts.length} product${selectedProducts.length !== 1 ? 's' : ''} selected</span>
+      <button class="clear-all-btn" title="Clear all selected products">
+        <i class="fa-solid fa-trash"></i> Clear All
+      </button>
+    </div>
+    <div class="selected-products-grid">
+      ${selectedProducts
+        .map(product => `
+          <div class="selected-product-item" data-product-id="${product.id}">
+            <img src="${product.image}" alt="${product.name}">
+            <div class="selected-product-info">
+              <h4>${product.name}</h4>
+              <p>${product.brand}</p>
+            </div>
+            <button class="remove-product-btn" data-product-id="${product.id}" title="Remove this product">
+              <i class="fa-solid fa-times"></i>
+            </button>
+          </div>
+        `)
+        .join('')}
+    </div>
+  `;
     
   /* Add click listeners to remove buttons */
   addRemoveButtonListeners();
+  
+  /* Add click listener to clear all button */
+  addClearAllButtonListener();
 }
 
 /* Function to add click listeners to remove buttons */
@@ -182,6 +230,24 @@ function addRemoveButtonListeners() {
       }
     });
   });
+}
+
+/* Function to add click listener to clear all button */
+function addClearAllButtonListener() {
+  const clearAllBtn = document.querySelector('.clear-all-btn');
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      
+      /* Show confirmation for better UX */
+      if (confirm(`Are you sure you want to remove all ${selectedProducts.length} selected products?`)) {
+        clearAllSelectedProducts();
+        
+        /* Add feedback message to chat */
+        addMessageToChat('All selected products have been cleared.', false);
+      }
+    });
+  }
 }
 
 /* Function to update visual state of product cards */
