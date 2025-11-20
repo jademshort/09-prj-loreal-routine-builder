@@ -1684,6 +1684,36 @@ body {
   .language-toggle {
     align-self: flex-start !important;
   }
+
+  /* Make selected product cards smaller for 2-column layout on mobile */
+  .selected-product-item {
+    flex: 0 1 calc(50% - 6px) !important;
+    min-height: 65px !important;
+    padding: 8px !important;
+    gap: 8px !important;
+  }
+
+  .selected-product-item img {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .selected-product-info h4 {
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 2px !important;
+  }
+
+  .selected-product-info p {
+    font-size: 9px !important;
+    line-height: 1.2 !important;
+  }
+
+  .remove-product-btn {
+    width: 16px !important;
+    height: 16px !important;
+    font-size: 10px !important;
+  }
 }
 
 @media (max-width: 480px) {
