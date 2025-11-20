@@ -500,7 +500,7 @@ body {
 
   .selected-products h2,
   .chatbox h2 {
-    font-size: 12px;
+    font-size: 14px;
     margin-bottom: 8px;
   }
 
@@ -513,7 +513,7 @@ body {
   }
 
   .selected-count {
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .clear-all-btn {
@@ -711,7 +711,7 @@ body {
 
   .selected-products h2,
   .chatbox h2 {
-    font-size: 11px;
+    font-size: 13px;
     margin-bottom: 6px;
   }
 
@@ -724,7 +724,7 @@ body {
   }
 
   .selected-count {
-    font-size: 10px;
+    font-size: 9px;
   }
 
   .clear-all-btn {
