@@ -735,6 +735,15 @@ document
       true
     );
 
+    /* Scroll to chatbox to show the routine generation */
+    const chatbox = document.querySelector('.chatbox');
+    if (chatbox) {
+      chatbox.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+    }
+
     /* Show loading indicator */
     const loadingElement = showLoadingMessage();
 
