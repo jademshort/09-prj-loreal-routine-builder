@@ -455,7 +455,7 @@ body {
 
   .search-input-container input {
     padding: 10px 40px 10px 12px;
-    font-size: 12px;
+    font-size: 10px;
   }
 
   .products-grid {
@@ -675,7 +675,7 @@ body {
 
   .search-input-container input {
     padding: 9px 35px 9px 11px;
-    font-size: 11px;
+    font-size: 9px;
   }
 
   .product-card {
