@@ -1664,11 +1664,12 @@ body {
     padding: 4px 6px !important;
   }
 
-  /* Ensure logo is always visible on mobile */
+  /* Ensure logo is always visible on mobile and positioned correctly */
   .logo {
     opacity: 1 !important;
     visibility: visible !important;
     display: block !important;
+    margin-top: 60px !important;
   }
 }
 
