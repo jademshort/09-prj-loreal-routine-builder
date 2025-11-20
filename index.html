@@ -23,13 +23,16 @@
         <div class="header-top">
           <img src="img/loreal-logo.png" alt="L'Oréal Logo" class="logo" />
         </div>
-        
+
         <!-- Bottom section with main content -->
         <div class="header-content">
           <div class="text-and-button">
             <div>
               <h1 class="site-title">Smart Routine &amp; Product Advisor</h1>
-              <p class="site-subtitle">Discover your perfect beauty routine with L'Oréal's personalized recommendations</p>
+              <p class="site-subtitle">
+                Discover your perfect beauty routine with L'Oréal's personalized
+                recommendations
+              </p>
             </div>
             <div class="language-toggle">
               <button id="toggleRTL" class="rtl-toggle-btn">
@@ -57,11 +60,11 @@
               <option value="suncare">Suncare</option>
               <option value="fragrance">Fragrance</option>
             </select>
-            
+
             <div class="search-input-container">
-              <input 
-                type="text" 
-                id="productSearch" 
+              <input
+                type="text"
+                id="productSearch"
                 placeholder="Search products by name or keyword..."
               />
               <i class="fa-solid fa-search search-icon"></i>
@@ -69,39 +72,39 @@
           </div>
         </div>
 
-      <!-- Products Grid -->
-      <div id="productsContainer"></div>
+        <!-- Products Grid -->
+        <div id="productsContainer"></div>
 
-      <!-- Selected Products -->
-      <div class="selected-products">
-        <h2>Selected Products</h2>
-        <div id="selectedProductsList"></div>
-        <button id="generateRoutine" class="generate-btn">
-          <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Routine
-        </button>
-      </div>
-
-      <!------- Chat Area ------->
-      <section class="chatbox">
-        <h2>Let's Build Your Routine</h2>
-        <div id="chatWindow" class="chat-window"></div>
-
-        <form id="chatForm" class="chat-form">
-          <label for="userInput" class="visually-hidden">Message</label>
-          <input
-            id="userInput"
-            name="userInput"
-            type="text"
-            placeholder="Ask me about products or routines…"
-            autocomplete="off"
-            required
-          />
-          <button type="submit" id="sendBtn">
-            <i class="fa-solid fa-paper-plane"></i>
-            <span class="visually-hidden">Send</span>
+        <!-- Selected Products -->
+        <div class="selected-products">
+          <h2>Selected Products</h2>
+          <div id="selectedProductsList"></div>
+          <button id="generateRoutine" class="generate-btn">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Routine
           </button>
-        </form>
-      </section>
+        </div>
+
+        <!------- Chat Area ------->
+        <section class="chatbox">
+          <h2>Let's Build Your Routine</h2>
+          <div id="chatWindow" class="chat-window"></div>
+
+          <form id="chatForm" class="chat-form">
+            <label for="userInput" class="visually-hidden">Message</label>
+            <input
+              id="userInput"
+              name="userInput"
+              type="text"
+              placeholder="Ask me about products or routines…"
+              autocomplete="off"
+              required
+            />
+            <button type="submit" id="sendBtn">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span class="visually-hidden">Send</span>
+            </button>
+          </form>
+        </section>
       </div>
 
       <!------- Footer Links ------->
@@ -116,8 +119,11 @@
       </footer>
     </div>
 
-    <!-- secrets.js can be removed when using Cloudflare Workers for API requests -->
-    <script src="secrets.js"></script>
+    <!-- Define worker URL directly for production -->
+    <script>
+      const WORKER_URL =
+        "https://lorealpage-worker.jademckenzieshort.workers.dev/";
+    </script>
     <script src="script.js"></script>
   </body>
 </html>

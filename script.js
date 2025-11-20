@@ -578,6 +578,12 @@ productSearch.addEventListener("keydown", (e) => {
 /* Function to send messages to OpenAI via Cloudflare Worker */
 async function sendMessageToAI(userMessage, isRoutineGeneration = false) {
   try {
+    /* Check if WORKER_URL is defined */
+    if (typeof WORKER_URL === "undefined") {
+      throw new Error(
+        "WORKER_URL is not defined. Please check your configuration."
+      );
+    }
     /* Create context about selected products for AI awareness */
     let selectedProductsContext = "";
     if (selectedProducts.length > 0) {
@@ -650,7 +656,17 @@ Provide helpful, friendly advice. Keep responses concise but informative.${selec
     return aiResponse;
   } catch (error) {
     console.error("Error sending message to AI:", error);
-    return "Sorry, I'm having trouble connecting right now. Please try again in a moment.";
+
+    /* Provide more specific error messages for debugging */
+    if (typeof WORKER_URL === "undefined") {
+      return "Configuration error: API endpoint not found. Please check the setup.";
+    } else if (error.message.includes("fetch")) {
+      return "Network error: Unable to connect to the AI service. Please check your internet connection.";
+    } else if (error.message.includes("API request failed")) {
+      return `API error: The service returned an error (${error.message}). Please try again.`;
+    } else {
+      return "Sorry, I'm having trouble connecting right now. Please try again in a moment.";
+    }
   }
 }
 
