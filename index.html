@@ -121,8 +121,28 @@
 
     <!-- Define worker URL directly for production -->
     <script>
-      const WORKER_URL =
-        "https://lorealpage-worker.jademckenzieshort.workers.dev/";
+      const WORKER_URL = "https://lorealpage-worker.jademckenzieshort.workers.dev/";
+      console.log("WORKER_URL defined:", WORKER_URL);
+      
+      // Test function to verify AI connection
+      window.testAI = async function() {
+        try {
+          const response = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              messages: [{ role: "user", content: "Hello, can you respond?" }],
+              max_tokens: 50
+            })
+          });
+          const data = await response.json();
+          console.log("AI Test Response:", data);
+          return data;
+        } catch (error) {
+          console.error("AI Test Error:", error);
+          return error;
+        }
+      };
     </script>
     <script src="script.js"></script>
   </body>
