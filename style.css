@@ -157,11 +157,11 @@ body {
   }
 
   [dir="rtl"] .text-and-button {
-    align-items: flex-start !important;
+    align-items: flex-end !important;
   }
 
   [dir="rtl"] .header-content {
-    text-align: left !important;
+    text-align: right !important;
   }
 }
 
