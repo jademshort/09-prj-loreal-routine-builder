@@ -132,15 +132,15 @@ function displayProducts(products) {
               <h3>${product.name}</h3>
               <p>${product.brand}</p>
             </div>
+            <button class="mobile-front-btn ${
+              isSelected ? "selected" : ""
+            }" data-product-id="${product.id}">
+              ${isSelected ? "✓ Added" : "+ Add to Routine"}
+            </button>
             <div class="product-description-overlay">
               <h4>${product.name}</h4>
               <div class="brand-name">${product.brand}</div>
               <div class="description-text">${product.description}</div>
-              <button class="mobile-add-btn ${
-                isSelected ? "selected" : ""
-              }" data-product-id="${product.id}">
-                ${isSelected ? "✓ Added" : "+ Add to Routine"}
-              </button>
             </div>
           </div>
         `;
@@ -159,50 +159,93 @@ function addProductCardListeners(products) {
   const productCards = document.querySelectorAll(".product-card");
 
   productCards.forEach((card) => {
-    /* Handle click for selection - now works because overlay has pointer-events: none */
+    /* Handle mobile front button clicks */
+    const mobileFrontBtn = card.querySelector(".mobile-front-btn");
+    if (mobileFrontBtn) {
+      /* Remove any existing listeners to prevent duplicates */
+      mobileFrontBtn.replaceWith(mobileFrontBtn.cloneNode(true));
+      const newMobileFrontBtn = card.querySelector(".mobile-front-btn");
+
+      /* Add click handler for mobile front button */
+      const handleFrontButtonClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const productId = parseInt(newMobileFrontBtn.dataset.productId);
+        const product =
+          allProducts.find((p) => p.id === productId) ||
+          products.find((p) => p.id === productId);
+
+        if (product) {
+          toggleProductSelection(product);
+
+          /* Visual feedback */
+          newMobileFrontBtn.style.backgroundColor = "#ff003b";
+          newMobileFrontBtn.style.color = "white";
+          setTimeout(() => {
+            newMobileFrontBtn.style.backgroundColor = "";
+            newMobileFrontBtn.style.color = "";
+          }, 200);
+        }
+      };
+
+      newMobileFrontBtn.addEventListener("click", handleFrontButtonClick);
+      newMobileFrontBtn.addEventListener("touchend", handleFrontButtonClick);
+    }
+
+    /* Handle card click for selection (excluding button area) */
     card.addEventListener("click", (e) => {
-      /* Check if clicking on mobile add button */
-      if (e.target.classList.contains("mobile-add-btn")) {
-        return; /* Let the button handler deal with this */
+      /* Don't handle if clicking on mobile front button */
+      if (
+        e.target.classList.contains("mobile-front-btn") ||
+        e.target.closest(".mobile-front-btn")
+      ) {
+        return;
       }
 
       const productId = parseInt(card.dataset.productId);
-      const product = products.find((p) => p.id === productId);
+      /* Find product in all products array for cross-category support */
+      const product =
+        allProducts.find((p) => p.id === productId) ||
+        products.find((p) => p.id === productId);
 
       if (product) {
         toggleProductSelection(product);
       }
     });
 
-    /* Handle mobile add button clicks */
-    const mobileBtn = card.querySelector(".mobile-add-btn");
-    if (mobileBtn) {
-      mobileBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const productId = parseInt(mobileBtn.dataset.productId);
-        const product = products.find((p) => p.id === productId);
-
-        if (product) {
-          toggleProductSelection(product);
-        }
-      });
-    }
-
-    /* Simplified mobile interaction - tap to show description */
+    /* Enhanced mobile touch interaction for description overlay */
+    let touchStartTime = 0;
     let isShowingDescription = false;
 
-    /* For touch devices, use tap to toggle description */
-    card.addEventListener("touchend", (e) => {
-      /* If we're on a touch device (no hover capability) */
-      if (window.matchMedia("(hover: none)").matches) {
-        e.preventDefault();
+    /* Track touch start time */
+    card.addEventListener("touchstart", (e) => {
+      touchStartTime = Date.now();
+    });
 
-        if (
-          !isShowingDescription &&
-          !e.target.classList.contains("mobile-add-btn")
-        ) {
-          card.classList.add("show-description");
-          isShowingDescription = true;
+    /* Handle touch end for mobile description display */
+    card.addEventListener("touchend", (e) => {
+      const touchDuration = Date.now() - touchStartTime;
+
+      /* Only show description on quick taps, not on button clicks */
+      if (
+        touchDuration < 300 &&
+        !e.target.classList.contains("mobile-front-btn") &&
+        !e.target.closest(".mobile-front-btn")
+      ) {
+        if (window.matchMedia("(hover: none)").matches) {
+          e.preventDefault();
+
+          if (!isShowingDescription) {
+            card.classList.add("show-description");
+            isShowingDescription = true;
+
+            /* Auto-hide after 3 seconds */
+            setTimeout(() => {
+              card.classList.remove("show-description");
+              isShowingDescription = false;
+            }, 3000);
+          }
         }
       }
     });
@@ -327,81 +370,21 @@ function updateProductCardVisuals() {
     const isSelected = selectedProducts.some(
       (selected) => selected.id === productId
     );
-    const mobileBtn = card.querySelector(".mobile-add-btn");
+    const mobileFrontBtn = card.querySelector(".mobile-front-btn");
 
     if (isSelected) {
       card.classList.add("selected");
-      if (mobileBtn) {
-        mobileBtn.classList.add("selected");
-        mobileBtn.textContent = "✓ Added";
+      if (mobileFrontBtn) {
+        mobileFrontBtn.classList.add("selected");
+        mobileFrontBtn.textContent = "✓ Added";
       }
     } else {
       card.classList.remove("selected");
-      if (mobileBtn) {
-        mobileBtn.classList.remove("selected");
-        mobileBtn.textContent = "+ Add to Routine";
+      if (mobileFrontBtn) {
+        mobileFrontBtn.classList.remove("selected");
+        mobileFrontBtn.textContent = "+ Add to Routine";
       }
     }
-  });
-}
-
-/* Enhanced product card listeners for cross-category support */
-function addProductCardListeners(products) {
-  const productCards = document.querySelectorAll(".product-card");
-
-  productCards.forEach((card) => {
-    /* Handle click for selection */
-    card.addEventListener("click", (e) => {
-      if (e.target.classList.contains("mobile-add-btn")) {
-        return;
-      }
-
-      const productId = parseInt(card.dataset.productId);
-      /* Find product in all products array since we might be viewing cross-category results */
-      const product = allProducts.find((p) => p.id === productId);
-
-      if (product) {
-        toggleProductSelection(product);
-      }
-    });
-
-    /* Handle mobile add button clicks */
-    const mobileBtn = card.querySelector(".mobile-add-btn");
-    if (mobileBtn) {
-      mobileBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const productId = parseInt(mobileBtn.dataset.productId);
-        const product = allProducts.find((p) => p.id === productId);
-
-        if (product) {
-          toggleProductSelection(product);
-        }
-      });
-    }
-
-    /* Mobile touch interactions remain the same */
-    let isShowingDescription = false;
-
-    card.addEventListener("touchend", (e) => {
-      if (window.matchMedia("(hover: none)").matches) {
-        e.preventDefault();
-
-        if (
-          !isShowingDescription &&
-          !e.target.classList.contains("mobile-add-btn")
-        ) {
-          card.classList.add("show-description");
-          isShowingDescription = true;
-        }
-      }
-    });
-
-    document.addEventListener("touchstart", (e) => {
-      if (!e.target.closest(".product-card")) {
-        card.classList.remove("show-description");
-        isShowingDescription = false;
-      }
-    });
   });
 }
 
@@ -513,15 +496,15 @@ function applyFiltersAndDisplay() {
                 <h3>${product.name}</h3>
                 <p>${product.brand}</p>
               </div>
+              <button class="mobile-front-btn ${
+                isSelected ? "selected" : ""
+              }" data-product-id="${product.id}">
+                ${isSelected ? "✓ Added" : "+ Add to Routine"}
+              </button>
               <div class="product-description-overlay">
                 <h4>${product.name}</h4>
                 <div class="brand-name">${product.brand}</div>
                 <div class="description-text">${product.description}</div>
-                <button class="mobile-add-btn ${
-                  isSelected ? "selected" : ""
-                }" data-product-id="${product.id}">
-                  ${isSelected ? "✓ Added" : "+ Add to Routine"}
-                </button>
               </div>
             </div>
           `;
@@ -684,7 +667,7 @@ function addMessageToChat(message, isUser = false) {
     (message.endsWith("...") ||
       !message.match(/[.!?]$/) ||
       message.length >
-        800) /* Likely truncated if very long without proper ending */;
+        800); /* Likely truncated if very long without proper ending */
 
   if (isTruncated) {
     messageDiv.innerHTML = `
