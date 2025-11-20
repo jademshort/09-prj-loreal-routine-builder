@@ -765,3 +765,57 @@ chatForm.addEventListener("submit", async (e) => {
 if (toggleRTL) {
   toggleRTL.addEventListener('click', toggleRTLMode);
 }
+
+/* Scroll Effects for Header */
+function initScrollEffects() {
+  const header = document.querySelector('.site-header');
+  const headerContent = document.querySelector('.header-content');
+  const logo = document.querySelector('.logo');
+  
+  if (!header || !headerContent) return;
+  
+  let ticking = false;
+  
+  function updateScrollEffect() {
+    const scrolled = window.pageYOffset;
+    const headerHeight = header.offsetHeight;
+    const scrollProgress = Math.min(scrolled / (headerHeight * 0.8), 1);
+    
+    /* Background zoom effect (100% to 120%) */
+    const zoomScale = 100 + (scrollProgress * 20);
+    header.style.backgroundSize = `${zoomScale}%`;
+    
+    /* Text fade out effect */
+    const opacity = Math.max(1 - (scrollProgress * 1.5), 0);
+    const translateY = scrollProgress * 30;
+    
+    if (headerContent) {
+      headerContent.style.opacity = opacity;
+      headerContent.style.transform = `translateY(${translateY}px)`;
+    }
+    
+    /* Logo stays visible longer */
+    if (logo) {
+      const logoOpacity = Math.max(1 - (scrollProgress * 0.8), 0);
+      logo.style.opacity = logoOpacity;
+    }
+    
+    ticking = false;
+  }
+  
+  function requestTick() {
+    if (!ticking) {
+      requestAnimationFrame(updateScrollEffect);
+      ticking = true;
+    }
+  }
+  
+  /* Listen for scroll events */
+  window.addEventListener('scroll', requestTick, { passive: true });
+  
+  /* Initial call */
+  updateScrollEffect();
+}
+
+/* Initialize scroll effects when DOM is loaded */
+document.addEventListener('DOMContentLoaded', initScrollEffects);
