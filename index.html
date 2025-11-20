@@ -44,28 +44,30 @@
       <div class="content-wrapper">
         <!-- Category Filter & Search -->
         <div class="search-section">
-        <select id="categoryFilter">
-          <option value="" disabled selected>Choose a Category</option>
-          <option value="cleanser">Cleansers</option>
-          <option value="moisturizer">Moisturizers & Treatments</option>
-          <option value="haircare">Haircare</option>
-          <option value="makeup">Makeup</option>
-          <option value="hair color">Hair Color</option>
-          <option value="hair styling">Hair Styling</option>
-          <option value="men's grooming">Men's Grooming</option>
-          <option value="suncare">Suncare</option>
-          <option value="fragrance">Fragrance</option>
-        </select>
-        
-        <div class="search-input-container">
-          <input 
-            type="text" 
-            id="productSearch" 
-            placeholder="Search all products by name or keyword..."
-          />
-          <i class="fa-solid fa-search search-icon"></i>
+          <div class="search-container">
+            <select id="categoryFilter" class="category-selector">
+              <option value="" disabled selected>All Categories</option>
+              <option value="cleanser">Cleansers</option>
+              <option value="moisturizer">Moisturizers & Treatments</option>
+              <option value="haircare">Haircare</option>
+              <option value="makeup">Makeup</option>
+              <option value="hair color">Hair Color</option>
+              <option value="hair styling">Hair Styling</option>
+              <option value="men's grooming">Men's Grooming</option>
+              <option value="suncare">Suncare</option>
+              <option value="fragrance">Fragrance</option>
+            </select>
+            
+            <div class="search-input-container">
+              <input 
+                type="text" 
+                id="productSearch" 
+                placeholder="Search products by name or keyword..."
+              />
+              <i class="fa-solid fa-search search-icon"></i>
+            </div>
+          </div>
         </div>
-      </div>
 
       <!-- Products Grid -->
       <div id="productsContainer"></div>
