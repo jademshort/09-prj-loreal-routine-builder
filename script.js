@@ -670,6 +670,19 @@ Provide helpful, friendly advice. Keep responses concise but informative.${selec
   }
 }
 
+/* Function to convert Markdown formatting to HTML */
+function formatMarkdownToHTML(text) {
+  return text
+    /* Bold text: **text** or __text__ */
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/__(.*?)__/g, '<strong>$1</strong>')
+    /* Italic text: *text* or _text_ */
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/_(.*?)_/g, '<em>$1</em>')
+    /* Convert line breaks */
+    .replace(/\n/g, "<br>");
+}
+
 /* Function to add messages to chat window */
 function addMessageToChat(message, isUser = false) {
   const messageDiv = document.createElement("div");
@@ -693,15 +706,15 @@ function addMessageToChat(message, isUser = false) {
 
   if (isTruncated) {
     messageDiv.innerHTML = `
-      <div class="message-content">${message.replace(/\n/g, "<br>")}</div>
+      <div class="message-content">${formatMarkdownToHTML(message)}</div>
       <div class="truncation-notice">
         <i class="fa-solid fa-exclamation-triangle"></i>
         Response may have been cut off. Try asking "Can you continue?" or be more specific.
       </div>
     `;
   } else {
-    /* Convert line breaks to HTML for better formatting */
-    messageDiv.innerHTML = message.replace(/\n/g, "<br>");
+    /* Convert Markdown formatting and line breaks to HTML */
+    messageDiv.innerHTML = formatMarkdownToHTML(message);
   }
 
   chatWindow.appendChild(messageDiv);
