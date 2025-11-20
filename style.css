@@ -524,12 +524,31 @@ body {
 
 .chat-window {
   padding: 20px;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.5;
   height: 250px;
   overflow-y: auto;
   background: #fafafa;
   margin-bottom: 20px;
+  scrollbar-width: thin;
+  scrollbar-color: #888 transparent;
+}
+
+.chat-window::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-window::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-window::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.chat-window::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 /* placeholder message */
@@ -1205,23 +1224,27 @@ body {
 
 /* Chat message styles */
 .chat-message {
-  margin-bottom: 15px;
-  padding: 12px;
-  border-radius: 8px;
-  max-width: 80%;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  max-width: 70%;
+  width: fit-content;
+  display: inline-block;
 }
 
 .chat-message.user-message {
-  background: #000;
+  background: #4a4a4a;
   color: white;
   margin-left: auto;
   text-align: right;
+  display: block;
 }
 
 .chat-message.ai-message {
-  background: #f0f0f0;
+  background: #f5f6f7;
   color: #333;
   margin-right: auto;
+  display: block;
 }
 
 /* RTL chat messages */
@@ -1238,9 +1261,10 @@ body {
 }
 
 .chat-message.loading {
-  background: #e0e0e0;
+  background: #f0f1f2;
   color: #666;
   font-style: italic;
+  border: 1px dashed #ccc;
 }
 
 /* Truncation notice styling */
