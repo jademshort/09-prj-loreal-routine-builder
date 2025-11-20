@@ -5,6 +5,8 @@ const productsContainer = document.getElementById("productsContainer");
 const selectedProductsList = document.getElementById("selectedProductsList");
 const chatForm = document.getElementById("chatForm");
 const chatWindow = document.getElementById("chatWindow");
+const toggleRTL = document.getElementById("toggleRTL");
+const toggleText = document.getElementById("toggleText");
 
 /* Array to store selected products */
 let selectedProducts = [];
@@ -47,6 +49,43 @@ function clearAllSelectedProducts() {
 
 /* Load saved products from localStorage on page load */
 loadSelectedProductsFromStorage();
+
+/* RTL Language Support Functions */
+function toggleRTLMode() {
+  const html = document.documentElement;
+  const isRTL = html.getAttribute('dir') === 'rtl';
+  
+  if (isRTL) {
+    /* Switch to LTR */
+    html.setAttribute('dir', 'ltr');
+    html.setAttribute('lang', 'en');
+    toggleText.textContent = 'Text Direction';
+    localStorage.setItem('lorealLanguageDir', 'ltr');
+  } else {
+    /* Switch to RTL */
+    html.setAttribute('dir', 'rtl');
+    html.setAttribute('lang', 'mul'); /* Multiple languages */
+    toggleText.textContent = 'Text Direction';
+    localStorage.setItem('lorealLanguageDir', 'rtl');
+  }
+}
+
+function loadLanguagePreference() {
+  try {
+    const savedDir = localStorage.getItem('lorealLanguageDir');
+    if (savedDir === 'rtl') {
+      const html = document.documentElement;
+      html.setAttribute('dir', 'rtl');
+      html.setAttribute('lang', 'mul'); /* Multiple languages */
+      toggleText.textContent = 'Text Direction';
+    }
+  } catch (error) {
+    console.error('Failed to load language preference:', error);
+  }
+}
+
+/* Initialize language preference on page load */
+loadLanguagePreference();
 
 /* Initialize search functionality on page load */
 initializeSearch();
@@ -721,3 +760,8 @@ chatForm.addEventListener("submit", async (e) => {
   /* Add AI response to chat */
   addMessageToChat(aiResponse);
 });
+
+/* RTL toggle event listener */
+if (toggleRTL) {
+  toggleRTL.addEventListener('click', toggleRTLMode);
+}
