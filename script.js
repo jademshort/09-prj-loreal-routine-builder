@@ -678,12 +678,18 @@ function addMessageToChat(message, isUser = false) {
     : "chat-message ai-message";
 
   /* Check if message appears to be cut off and add indicator */
+  const hasCompletionIndicator = 
+    message.toLowerCase().includes("routine complete") ||
+    message.toLowerCase().includes("complete!") ||
+    message.toLowerCase().includes("finished!") ||
+    message.toLowerCase().includes("done!");
+    
   const isTruncated =
     !isUser &&
+    !hasCompletionIndicator &&
     (message.endsWith("...") ||
-      !message.match(/[.!?]$/) ||
-      message.length >
-        800); /* Likely truncated if very long without proper ending */
+      (!message.match(/[.!?]$/) && message.length > 600) ||
+      (message.length > 1200 && !message.match(/[.!?]\s*$/)));
 
   if (isTruncated) {
     messageDiv.innerHTML = `
